@@ -1,0 +1,190 @@
+{% include 'header.html' %}
+
+<body>
+
+<!-- Start of landing page -->
+<div data-role="page" id="main">
+
+	<div data-role="header">
+		<h1>NEWS</h1>
+	</div><!-- /header -->
+
+		<div role="main" class="ui-content">
+			<h2>Welcome!</h2><br>
+				Welcome to the NEWS Application.
+
+			<p><a href="#register" class="ui-btn ui-shadow ui-corner-all">Register User</a></p>
+			<p><a href="#login" class="ui-btn ui-shadow ui-corner-all">Login</a></p>
+
+		</div><!-- /content -->
+</div><!-- end landing page -->
+
+<!-- Start of login page -->
+<div data-role="page" id="login" data-theme="a">
+	
+	<div data-role="header">
+		<input type="button" value="Back" onclick="window.history.back()" /> 
+		<h1>Login page</h1>
+	</div><!-- /header -->
+
+		<div role="main" class="ui-content">
+			<h2>Login</h2>
+				Username <input type="text" name="login_username" id="login_username" autofocus>
+				Password <input type="password" name="login_pass" id="login_pass">
+				<button class="ui-btn" id="loginButton">Submit</button>
+		</div><!-- /content -->
+</div><!-- end of login page -->
+
+<!-- Start of register page -->
+<div data-role="page" id="register" data-theme="a">
+	
+	<div data-role="header">
+		<input type="button" value="Back" onclick="window.history.back()" /> 
+		<h1>Register</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+		<h2>Register</h2>    
+			Username <input type="text" name="username" id="username" value="">
+			Password <input type="password" name="pass" id="pass" value="" autocomplete="off">
+			Account Type <select name="acctype" id="acctype">
+					<option disabled selected value> -- select an option -- </option>
+        			<option value="Nurse">Nurse</option>
+        			<option value="Doctor">Doctor</option>
+    			 		</select>
+			<div id="provider" ><select name="pro" id="pro"><option value="1">1<option></select></div>
+			<button class="ui-btn" id="registerButton">Submit</button>
+	</div><!-- /content -->
+</div> <!-- end of register page -->
+
+<!-- Start of nurse's page -->
+<div data-role="page" id="nurse" data-theme="a">
+    <div data-role="header" data-position="fixed" style="overflow:hidden;">
+		<h1>Nurse's Page</h1>
+    	<a href="#" data-icon="back" class="ui-btn-right" onclick="window.history.back()">Back</a>
+			<!-- <div data-role="tabs" id="tabs"> -->
+    			<div data-role="navbar">
+        			<ul>
+            			<li><a href="#record" data-icon="heart">Record NEWS</a></li>
+            			<li><a href="#" data-icon="grid">View Observations</a></li>
+        			</ul>
+    			</div><!-- /navbar -->
+			</div>
+		</div><!-- /header -->
+
+	
+
+	<div role="main" class="ui-content" id="record">
+		Patient Lookup:<input id="patient" placeholder="Lookup patient by account number">
+		<button id="lookupPt">Search</button>
+	
+	
+	
+	</div><!-- /content -->
+</div>
+
+<div data-role="page" id="doctor" data-theme="a">
+    <div data-role="header">
+		<input type="button" value="Back" onclick="window.history.back()" /> 
+		<h1>Doctors's Page</h1>
+	</div><!-- /header -->
+
+    <div role="main" class="ui-content">
+	
+
+
+	</div><!-- /content -->
+</div>
+</body>
+
+<script>
+
+// function to log user into app
+$( "#loginButton" ).click(function() {
+  
+      var un = $( "#login_username" ).val();
+      console.log(un);
+      
+      var pw = $( "#login_pass" ).val();
+      console.log(pw);
+           
+      $.post( "/backend", { type: "login", username:un, password:pw})
+     .done(function( data ) {
+           
+        if(data == 'Nurse'){
+            window.location="/index#nurse";
+        }
+        else if(data == 'Doctor'){
+            window.location="/index#doctor";
+        }
+		});
+});
+
+// function to show options to select providerId
+<!-- function profunction () { -->
+	<!-- $("#acctype").change(function(){ -->
+
+		<!-- if($(this).val === "doctor"){ -->
+			<!-- $("#provider").show(); -->
+		<!-- } -->
+		<!-- else{ -->
+			<!-- $("#provider").hide(); -->
+		<!-- } -->
+	<!-- }); -->
+<!-- } -->
+
+$(document).ready(function(){
+	$("select").change(function(){
+		var type = $(this).val();
+		if(type == "Doctor"){
+			$("#provider").show();
+		} else if(type == "Nurse"){
+            $("#provider").hide();
+        } else {
+			$("#provider").hide();
+		}
+	});
+});
+
+// function to register user
+$( "#registerButton" ).click(function() {
+  
+      var un = $( "#username" ).val();
+      console.log(un);
+      
+      var pw = $( "#pass" ).val();
+      console.log(pw);
+      
+      var at = $( "#acctype" ).val();
+      console.log(acctype);
+      
+      $.post( "/backend", { type: "register", username:un, password:pw, acctype:at})
+     .done(function( data ) {
+        <!-- alert( "Data Loaded: " + data ); -->
+		
+		if(data == 'Nurse'){
+            window.location="/index#nurse";
+        }
+        else if(data == 'Doctor'){
+            window.location="/index#doctor";
+        }
+		});  
+});
+
+// function to lookup patient and return results
+$( "#lookupPt" ).click(function() {
+
+	var patient = $("#patient").val();
+	
+	$.post( "/patient", {type: "lookuppatient", acct: patient})
+		.done(function(data){
+		alert(data);
+		
+	});
+});
+
+</script>
+
+
+
+{% include 'footer.html' %}
