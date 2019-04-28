@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Login;
+use App\Entity\Providers;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;   
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -68,7 +69,28 @@ class Backend extends AbstractController
                 return new Response(
                     $person->getAcctype()
                     );                  
-        }    
+        } 
+		if($type == 'getProviders'){
+			
+			$entityManager = $this->getDoctrine()->getManager();     
+			
+			$providers = $this->getDoctrine()->getRepository(Providers::class)->findAll();
+			
+			$output = '<select name="pro" id="pro">';
+				
+			foreach ($providers as $pro) {
+				
+				$output .= '<option value="'.$pro->getProviderName().'">' . $pro->getProviderName() . '</option>';
+			}
+			
+			$output .= '</select>';
+				
+			
+			return new Response(
+				$output
+			);
+        
+		}
     }
     
     

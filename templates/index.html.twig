@@ -3,27 +3,28 @@
 <body>
 
 <!-- Start of landing page -->
-<div data-role="page" id="main">
+<div data-role="page" id="main" class="bg-color">
 
-	<div data-role="header">
-		<h1>NEWS</h1>
+	<div data-role="header" class="header">
+		<img src="img/logo.jpg" alt="logo"/>
+		<h1>N.E.W.S.</h1>
 	</div><!-- /header -->
 
 		<div role="main" class="ui-content">
 			<h2>Welcome!</h2><br>
 				Welcome to the NEWS Application.
-
+			<div >
 			<p><a href="#register" class="ui-btn ui-shadow ui-corner-all">Register User</a></p>
 			<p><a href="#login" class="ui-btn ui-shadow ui-corner-all">Login</a></p>
-
+			</div>
 		</div><!-- /content -->
 </div><!-- end landing page -->
 
 <!-- Start of login page -->
-<div data-role="page" id="login" data-theme="a">
+<div data-role="page" id="login" class="bg-color" data-theme="a">
 	
-	<div data-role="header">
-		<input type="button" value="Back" onclick="window.history.back()" /> 
+	<div data-role="header" class="header">
+		<img src="img/logo.jpg" alt="logo" />
 		<h1>Login page</h1>
 	</div><!-- /header -->
 
@@ -36,10 +37,10 @@
 </div><!-- end of login page -->
 
 <!-- Start of register page -->
-<div data-role="page" id="register" data-theme="a">
+<div data-role="page" id="register" class="bg-color" data-theme="a">
 	
-	<div data-role="header">
-		<input type="button" value="Back" onclick="window.history.back()" /> 
+	<div data-role="header" class="header">
+		<img src="img/logo.jpg" alt="logo" />
 		<h1>Register</h1>
     </div><!-- /header -->
 
@@ -52,40 +53,171 @@
         			<option value="Nurse">Nurse</option>
         			<option value="Doctor">Doctor</option>
     			 		</select>
-			<div id="provider" ><select name="pro" id="pro"><option value="1">1<option></select></div>
+			<div id="provider" ></div>
+			
 			<button class="ui-btn" id="registerButton">Submit</button>
+			
 	</div><!-- /content -->
 </div> <!-- end of register page -->
 
+
+
 <!-- Start of nurse's page -->
-<div data-role="page" id="nurse" data-theme="a">
-    <div data-role="header" data-position="fixed" style="overflow:hidden;">
+<div data-role="page" id="nurse" class="bg-color" data-theme="a">
+    <div data-role="header" class="header">
+		<img src="img/logo.jpg" alt="logo" />
 		<h1>Nurse's Page</h1>
-    	<a href="#" data-icon="back" class="ui-btn-right" onclick="window.history.back()">Back</a>
-			<!-- <div data-role="tabs" id="tabs"> -->
-    			<div data-role="navbar">
-        			<ul>
-            			<li><a href="#record" data-icon="heart">Record NEWS</a></li>
-            			<li><a href="#" data-icon="grid">View Observations</a></li>
-        			</ul>
-    			</div><!-- /navbar -->
+	</div><!-- /header -->
+
+	<div id="lookuppatient">
+		<input type="text" id="patient" autofocus placeholder="Enter Patients Account Number:"> 
+		<br>
+		<button id="lookupPt">Find</button>
+	
+	</div>
+	<div class="ptwrapper"><div id="displaypatient"></div></div>
+	<div id="newswrap"><div id="newsDisplay"><textarea id="alert"></textarea></div></div>
+	<div id="observations">
+	
+	<h2>Observations</h2>
+	
+	<div class="wrapper">
+    
+		<div class="box a">	
+			<div class="modal">
+				<h2>Blood Pressure</h2>
+				<input type="text" id="bpview" class="obsview" readonly></a>
+				<a href="#bg-modal1" id="bprecord" data-position-to="window" data-rel="popup" class="button">Record</a>
 			</div>
-		</div><!-- /header -->
-
+		</div>
+		<div class="box b">	
+			<div class="modal">
+				<h2>Heart Rate</h2>
+				<input type="text" id="hrview" class="obsview" readonly></a>
+				<a href="#bg-modal2" id="hrrecord" data-position-to="window" data-rel="popup" class="button">Record</a>
+			</div>
+		</div>
+		<div class="box c">	
+			<div class="modal">
+				<h2>Temperature</h2>
+				<input type="text" id="tempview" class="obsview" readonly></a>
+				<a href="#bg-modal3" id="temprecord" data-position-to="window" data-rel="popup" class="button">Record</a>
+			</div>
+		</div>
+		<div class="box d">	
+			<div class="modal">
+				<h2>Respirations</h2>
+				<input type="text" id="respview" class="obsview" readonly></a>
+				<a href="#bg-modal4" id="resprecord" data-position-to="window" data-rel="popup" class="button">Record</a>
+			</div>
+		</div>
+		<div class="box e">	
+			<div class="modal">
+				<h2>SpO2</h2>
+				<input type="text" id="spo2view" class="obsview" readonly></a>
+				<a href="#bg-modal5" id="spo2record" data-position-to="window" data-rel="popup" class="button">Record</a>
+			</div>
+		</div>
+		<div class="box f">	
+			<div class="modal">
+				<h2>LOC</h2>
+				<input type="text" id="locview" class="obsview" readonly></a>
+				<a href="#bg-modal6" id="locrecord" data-position-to="window" data-rel="popup" class="button">Record</a>
+			</div>
+		</div>
+	</div>
+	
+	<button id="calculate">Calculate</button>
+	</div>
+		<!-- popup windows -->
+		
+		<div class="bg-modal2" id="bg-modal1" data-role="popup">
+			<div class="modal-content">
+				<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+				<img src="/img/bp.png" alt="bp">
+				<form>
+    				<label class="label" for="bpslider">Blood Pressure</label>
+    				<input type="range" name="bpslider" id="bpslider" min="0" max="280" value="120">
+				</form>
+				<a href="#" class="save" data-rel="back" onclick="bpCalc();">Save</a>
+			</div>			
+		</div>
+			
+		<div class="bg-modal2" id="bg-modal2" data-role="popup">
+			<div class="modal-content">
+				<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+				<img src="/img/hr.png" alt="hr">
+				<form>
+    				<label class="label" for="hrslider">Heart Rate</label>
+    				<input type="range" name="hrslider" id="hrslider" min="0" max="200" value="60">
+				</form>
+				<a href="#" class="save" data-rel="back" onclick="hrCalc();">Save</a>
+			</div>			
+		</div>
+	
+		<div class="bg-modal3" id="bg-modal3" data-role="popup">
+			<div class="modal-content">
+				<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+				<img src="/img/temp.png" alt="temp">
+				<form>
+    				<label class="label" for="tempinput">Temperature</label>
+    				<input type="number" step="any" id="tempinput"/>
+				</form>
+				<a href="#" class="save" data-rel="back" onclick="tempCalc();">Save</a>
+			</div>			
+		</div>
+		
+		<div class="bg-modal4" id="bg-modal4" data-role="popup">
+			<div class="modal-content">
+				<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+				<img src="/img/resp.png" alt="resp">
+				<form>
+    				<label class="label" for="respslider">Respirations</label>
+    				<input type="range" name="respslider" id="respslider" min="0" max="40" value="0">
+				</form>
+				<a href="#" class="save" data-rel="back" onclick="respCalc();">Save</a>
+			</div>			
+		</div>
+		
+		<div class="bg-modal5" id="bg-modal5" data-role="popup">
+			<div class="modal-content">
+				<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+				<img src="/img/spo2.png" alt="spo2">
+				<form>
+    				<label class="label" for="respslider">SpO2</label>
+    				<input type="range" name="spo2slider" id="spo2slider" min="0" max="100" value="0">
+				</form>
+				<a href="#" class="save" data-rel="back" onclick="spo2Calc();">Save</a>
+			</div>			
+		</div>
+		
+		<div class="bg-modal6" id="bg-modal6" data-role="popup">
+			<div class="modal-content">
+				<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+				<img src="/img/loc.jpg" alt="loc">
+				<form>
+    				<label class="label" for="locinput">Level of Consciousness</label>
+    				<select id="avpu">
+						<option value="alert">Alert</option>
+						<option value="verbal">Verbal</option>
+						<option value="pain">Pain</option>
+						<option value="unresponsive">Unresponsive</option>
+					</select>
+				</form>
+				<a href="#" class="save" data-rel="back" onclick="locCalc();">Save</a>
+			</div>			
+		</div>
 	
 
-	<div role="main" class="ui-content" id="record">
-		Patient Lookup:<input id="patient" placeholder="Lookup patient by account number">
-		<button id="lookupPt">Search</button>
+
 	
 	
-	
-	</div><!-- /content -->
 </div>
 
+
 <div data-role="page" id="doctor" data-theme="a">
-    <div data-role="header">
-		<input type="button" value="Back" onclick="window.history.back()" /> 
+    <div data-role="header" class="header">
+		<img src="img/logo.jpg" alt="logo" />
 		<h1>Doctors's Page</h1>
 	</div><!-- /header -->
 
@@ -95,11 +227,325 @@
 
 	</div><!-- /content -->
 </div>
-</body>
+
 
 <script>
+$("#observations").hide();
+$("#bpview").hide();
+$("#hrview").hide();
+$("#tempview").hide();
+$("#respview").hide();
+$("#spo2view").hide();
+$("#locview").hide();
+$("#newsDisplay").hide();
 
-// function to log user into app
+var patientid;
+var bpScore;
+var hrScore;
+var tempScore;
+var respScore;
+var spo2Score;
+var locScore;
+var newsScore;
+
+// function to lookup patient and return results - working
+$( "#lookupPt" ).click(function() {
+
+	var patient = $("#patient").val();
+	
+	$.post( "/patient", {type: "lookuppatient", acct: patient})
+		.done(function(data){
+		$("#displaypatient").show();
+		$("#displaypatient").html(data);
+		$("#lookuppatient").hide();
+		$("#observations").show();
+	});
+});	
+
+// bp Calculation - working
+function bpCalc() {
+		var val = document.getElementById('bpslider').value;
+		if (val >= 111 && val <= 240) {
+			bpScore = 0;
+			alert(bpScore);
+			$("#bprecord").hide();
+			$("#bpview").val(val + " mmHg");
+			$("#bpview").show();
+        }
+		else if ((val >= 101 && val <= 110) || (val >= 241)) {
+			bpScore = 1;
+			alert(bpScore);
+			$("#bprecord").hide();
+			$("#bpview").val(val + " mmHg");
+			$("#bpview").show();
+        }
+		else if (val >= 91 && val <= 100) {
+			bpScore = 2;
+			alert(bpScore);
+			$("#bprecord").hide();
+			$("#bpview").val(val + " mmHg");
+			$("#bpview").show();
+        }
+		else if (val >= 0 && val <= 90) {
+			bpScore = 3;
+			alert(bpScore);
+			$("#bprecord").hide();
+			$("#bpview").val(val + " mmHg");
+			$("#bpview").show();
+        }
+};
+// hr Calculation - working
+function hrCalc() {
+		var val = document.getElementById('hrslider').value;
+		if (val >= 51 && val <= 90) {
+			hrScore = 0;
+			alert(hrScore);
+			$("#hrrecord").hide();
+			$("#hrview").val(val + " bpm");
+			$("#hrview").show();
+        }
+		else if ((val >= 41 && val <= 50) || (val >= 91 && val <= 110)) {
+			hrScore = 1;
+			alert(hrScore);
+			$("#hrrecord").hide();
+			$("#hrview").val(val + " bpm");
+			$("#hrview").show();
+        }
+		else if (val >= 111 && val <= 130) {
+			hrScore = 2;
+			alert(hrScore);
+			$("#hrrecord").hide();
+			$("#hrview").val(val + " bpm");
+			$("#hrview").show();
+        }
+		else if (val <= 40 || val >= 131) {
+			hrScore = 3;
+			alert(hrScore);
+			$("#hrrecord").hide();
+			$("#hrview").val(val + " bpm");
+			$("#hrview").show();
+        }
+};
+// temp Calculation - working
+function tempCalc() {
+		var val = document.getElementById('tempinput').value;
+		if (val >= 35.6 && val <= 38.0) {
+			tempScore = 0;
+			alert(tempScore);
+			$("#temprecord").hide();
+			$("#tempview").val(val + " oC");
+			$("#tempview").show();
+		}
+		else if ((val >= 35.1 && val <= 35.5) || (val >= 38.1 && val <= 39.0)) {
+			tempScore = 1;
+			alert(tempScore);
+			$("#temprecord").hide();
+			$("#tempview").val(val + " oC");
+			$("#tempview").show();
+		}
+		else if (val >= 39.1) {
+			tempScore = 2;
+			alert(tempScore);
+			$("#temprecord").hide();
+			$("#tempview").val(val + " oC");
+			$("#tempview").show();
+		}
+		else if (val <= 35.0) {
+			tempScore = 3;
+			alert(tempScore);
+			$("#temprecord").hide();
+			$("#tempview").val(val + " oC");
+			$("#tempview").show();
+		}
+};
+// resp Calculation - working
+function respCalc() {
+		var val = document.getElementById('respslider').value;
+		if (val >= 12 && val <= 20) {
+			respScore = 0;
+			alert(respScore);
+			$("#resprecord").hide();
+			$("#respview").val(val + " bpm");
+			$("#respview").show();
+		}
+		else if (val >= 9 && val <= 11) {
+			respScore = 1;
+			alert(respScore);
+			$("#resprecord").hide();
+			$("#respview").val(val + " bpm");
+			$("#respview").show();
+		}
+		else if (val >= 21 && val <= 24) {
+			respScore = 2;
+			alert(respScore);
+			$("#resprecord").hide();
+			$("#respview").val(val + " bpm");
+			$("#respview").show();
+		}
+		else if (val <= 8 || val >= 25) {
+			respScore = 3;
+			alert(respScore);
+			$("#resprecord").hide();
+			$("#respview").val(val + " bpm");
+			$("#respview").show();
+		}
+};
+// spo2 Calculation - working
+function spo2Calc() {
+		var val = document.getElementById('spo2slider').value;
+		if (val >= 96) {
+			spo2Score = 0;
+			alert(spo2Score);
+			$("#spo2record").hide();
+			$("#spo2view").val(val + " %");
+			$("#spo2view").show();
+		}
+		else if (val >= 94 && val <= 95) {
+			spo2Score = 1;
+			alert(spo2Score);
+			$("#spo2record").hide();
+			$("#spo2view").val(val + " %");
+			$("#spo2view").show();
+		}
+		else if (val >= 92 && val <= 93) {
+			spo2Score = 2;
+			alert(spo2Score);
+			$("#spo2record").hide();
+			$("#spo2view").val(val + " %");
+			$("#spo2view").show();
+		}
+		else if (val <= 91) {
+			spo2Score = 3;
+			alert(spo2Score);
+			$("#spo2record").hide();
+			$("#spo2view").val(val + " %");
+			$("#spo2view").show();
+		}
+};
+// loc Calculation - working
+function locCalc() {
+	var val = document.getElementById("avpu").value;
+		if (val == 'alert') {
+			locScore = 0;
+			alert(locScore);
+			$("#locrecord").hide();
+			$("#locview").val(val);
+			$("#locview").show();
+		}
+		else {	
+			locScore = 3;
+			alert(locScore);
+			$("#locrecord").hide();
+			$("#locview").val(val);
+			$("#locview").show();
+		}
+};
+// news Calculation - working
+$( "#calculate" ).click(function() {
+	newsScore = bpScore + hrScore + tempScore + respScore + spo2Score + locScore;
+	  
+	if (newsScore = 0) {
+		$("#newsDisplay").css("background-color","white");
+	} 
+	else if (newsScore = 1) { 
+		$("#newsDisplay").css("background-color","yellow");
+		$("#alert").val("Nurse in charge");
+	}
+	else if (newsScore = 2) { 
+		$("#newsDisplay").css("background-color","blue");
+	}
+	else if (newsScore >= 4) { 
+		$("#newsDisplay").css("background-color","pink");
+	}
+		
+		
+		
+		
+		
+	var bp = document.getElementById('bpslider').value;
+	var hr = document.getElementById('hrslider').value;
+	var temp = document.getElementById('tempinput').value;
+	var resp = document.getElementById('respslider').value;
+	var spo2 = document.getElementById('spo2slider').value;
+	var loc = document.getElementById("avpu").value;
+	var news = newsScore;
+	
+	var patient = $("#patient").val();
+	
+	$.post( "/patient", {type: "patientid", acct: patient})
+		.done(function(data){
+			patientid = data;
+			
+	  
+		$.post( "/patient", { type: "recordobs", bp:bp, hr:hr, temp:temp, resp:resp, spo2:spo2, loc:loc, ptid:patientid, news:news})
+			.done(function( data ) {
+				$("#observations").hide();
+				$("#newsDisplay").html(news);
+				$("#newsDisplay").show();
+		});
+	});
+});
+
+// show provider div if account type is Doctor
+$(document).ready(function(){
+	$("select").change(function(){
+		var type = $(this).val();
+		if(type == "Doctor"){
+			$("#provider").show();
+		} else if(type == "Nurse"){
+            $("#provider").hide();
+        } else {
+			$("#provider").hide();
+		}
+	});
+});
+
+// fill provider select field
+var provider;
+	$.post( "/backend", {type: "getProviders"})
+	
+		.done(function(data) {
+		
+			$("#provider").html(data)
+			});
+			
+		
+// function to show options to select providerId
+<!-- function profunction () { -->
+	<!-- $("#acctype").change(function(){ -->
+
+		<!-- if($(this).val === "doctor"){ -->
+			<!-- $("#provider").show(); -->
+		<!-- } -->
+		<!-- else{ -->
+			<!-- $("#provider").hide(); -->
+		<!-- } -->
+	<!-- }); -->
+<!-- } -->
+// register user - working
+$( "#registerButton" ).click(function() {
+  
+      var un = $( "#username" ).val();
+      console.log(un);
+      
+      var pw = $( "#pass" ).val();
+      console.log(pw);
+      
+      var at = $( "#acctype" ).val();
+      console.log(acctype);
+      
+      $.post( "/backend", { type: "register", username:un, password:pw, acctype:at})
+     .done(function( data ) {
+		
+		if(data == 'Nurse'){
+            window.location="/index#nurse";
+        }
+        else if(data == 'Doctor'){
+            window.location="/index#doctor";
+        }
+		});  
+});
+// log user into app - working
 $( "#loginButton" ).click(function() {
   
       var un = $( "#login_username" ).val();
@@ -119,72 +565,8 @@ $( "#loginButton" ).click(function() {
         }
 		});
 });
-
-// function to show options to select providerId
-<!-- function profunction () { -->
-	<!-- $("#acctype").change(function(){ -->
-
-		<!-- if($(this).val === "doctor"){ -->
-			<!-- $("#provider").show(); -->
-		<!-- } -->
-		<!-- else{ -->
-			<!-- $("#provider").hide(); -->
-		<!-- } -->
-	<!-- }); -->
-<!-- } -->
-
-$(document).ready(function(){
-	$("select").change(function(){
-		var type = $(this).val();
-		if(type == "Doctor"){
-			$("#provider").show();
-		} else if(type == "Nurse"){
-            $("#provider").hide();
-        } else {
-			$("#provider").hide();
-		}
-	});
-});
-
-// function to register user
-$( "#registerButton" ).click(function() {
-  
-      var un = $( "#username" ).val();
-      console.log(un);
-      
-      var pw = $( "#pass" ).val();
-      console.log(pw);
-      
-      var at = $( "#acctype" ).val();
-      console.log(acctype);
-      
-      $.post( "/backend", { type: "register", username:un, password:pw, acctype:at})
-     .done(function( data ) {
-        <!-- alert( "Data Loaded: " + data ); -->
-		
-		if(data == 'Nurse'){
-            window.location="/index#nurse";
-        }
-        else if(data == 'Doctor'){
-            window.location="/index#doctor";
-        }
-		});  
-});
-
-// function to lookup patient and return results
-$( "#lookupPt" ).click(function() {
-
-	var patient = $("#patient").val();
-	
-	$.post( "/patient", {type: "lookuppatient", acct: patient})
-		.done(function(data){
-		alert(data);
-		
-	});
-});
-
 </script>
 
-
+</body>
 
 {% include 'footer.html' %}

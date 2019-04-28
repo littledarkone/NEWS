@@ -21,6 +21,11 @@ class Providers
      */
     private $ProviderName;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $mnemonic;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -34,6 +39,18 @@ class Providers
     public function setProviderName(string $ProviderName): self
     {
         $this->ProviderName = $ProviderName;
+
+        return $this;
+    }
+
+    public function getMnemonic(): ?string
+    {
+        return $this->mnemonic;
+    }
+
+    public function setMnemonic(string $mnemonic): self
+    {
+        $this->mnemonic = $mnemonic;
 
         return $this;
     }
