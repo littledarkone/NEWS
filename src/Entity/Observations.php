@@ -56,6 +56,11 @@ class Observations
      */
     private $newsScore;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $datetime;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -153,6 +158,18 @@ class Observations
     public function setNewsScore(int $newsScore): self
     {
         $this->newsScore = $newsScore;
+
+        return $this;
+    }
+
+    public function getDatetime(): ?string
+    {
+        return $this->datetime;
+    }
+
+    public function setDatetime(string $datetime): self
+    {
+        $this->datetime = $datetime;
 
         return $this;
     }

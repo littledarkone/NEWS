@@ -1,7 +1,5 @@
 {% include 'header.html' %}
 
-<body>
-
 <!-- Start of landing page -->
 <div data-role="page" id="main" class="bg-color">
 
@@ -9,12 +7,14 @@
 		<img src="img/logo.jpg" alt="logo"/>
 		<h1>N.E.W.S.</h1>
 	</div><!-- /header -->
-
+	{% if app.request.get('error') is defined %}
+    <h2>{{ app.request.get('error') }}</h2>
+	{% endif %}
 		<div role="main" class="ui-content">
 			<h2>Welcome!</h2><br>
-				Welcome to the NEWS Application.
-			<div >
-			<p><a href="#register" class="ui-btn ui-shadow ui-corner-all">Register User</a></p>
+			<h1>National Early Warning Score Application.</h1><br>
+			<div class="form">
+			<p><a href="#register" class="ui-btn ui-shadow ui-corner-all">Register User</a></p><br>
 			<p><a href="#login" class="ui-btn ui-shadow ui-corner-all">Login</a></p>
 			</div>
 		</div><!-- /content -->
@@ -22,17 +22,18 @@
 
 <!-- Start of login page -->
 <div data-role="page" id="login" class="bg-color" data-theme="a">
-	
-	<div data-role="header" class="header">
-		<img src="img/logo.jpg" alt="logo" />
-		<h1>Login page</h1>
-	</div><!-- /header -->
-
-		<div role="main" class="ui-content">
-			<h2>Login</h2>
-				Username <input type="text" name="login_username" id="login_username" autofocus>
-				Password <input type="password" name="login_pass" id="login_pass">
-				<button class="ui-btn" id="loginButton">Submit</button>
+		<div data-role="header" class="header">
+			<img onclick="goBack()" src="img/logo.jpg" alt="logo" />
+			<h1>Login page</h1>
+		</div><!-- /header -->
+		
+		<div role="main" class="ui-content form">
+			<h1>Login</h1><br>
+				<span id="loginNameError"></span><br>
+				<b>Username</b><input type="text" name="login_username" id="login_username" autofocus><br>
+				<span id="loginPasswordError"></span><br>
+				<b>Password</b><input type="password" name="login_pass" id="login_pass"><br>
+				<button class="ui-btn ui-shadow ui-corner-all" id="loginButton">Submit</button>
 		</div><!-- /content -->
 </div><!-- end of login page -->
 
@@ -40,32 +41,30 @@
 <div data-role="page" id="register" class="bg-color" data-theme="a">
 	
 	<div data-role="header" class="header">
-		<img src="img/logo.jpg" alt="logo" />
+		<img onclick="goBack()" src="img/logo.jpg" alt="logo" />
 		<h1>Register</h1>
     </div><!-- /header -->
 
-    <div role="main" class="ui-content">
+    <div role="main" class="ui-content form">
 		<h2>Register</h2>    
-			Username <input type="text" name="username" id="username" value="">
-			Password <input type="password" name="pass" id="pass" value="" autocomplete="off">
-			Account Type <select name="acctype" id="acctype">
+			<b>Username</b><input type="text" name="username" id="username" value=""><br>
+			<b>Password</b><input type="password" name="pass" id="pass" value="" autocomplete="off"><br>
+			<b>Account Type</b><select name="acctype" id="acctype">
 					<option disabled selected value> -- select an option -- </option>
-        			<option value="Nurse">Nurse</option>
-        			<option value="Doctor">Doctor</option>
-    			 		</select>
-			<div id="provider" ></div>
+        			<option value="nurse">Nurse</option>
+        			<option value="doctor">Doctor</option>
+    			 		</select><br>
+			<div id="provider"></div>
 			
-			<button class="ui-btn" id="registerButton">Submit</button>
+			<button class="ui-btn ui-shadow ui-corner-all" id="registerButton">Submit</button>
 			
 	</div><!-- /content -->
 </div> <!-- end of register page -->
 
-
-
-<!-- Start of nurse's page -->
+<!-- start of nurse page  -->
 <div data-role="page" id="nurse" class="bg-color" data-theme="a">
     <div data-role="header" class="header">
-		<img src="img/logo.jpg" alt="logo" />
+		<img onclick="goBack()" src="img/logo.jpg" alt="logo" />
 		<h1>Nurse's Page</h1>
 	</div><!-- /header -->
 
@@ -73,10 +72,28 @@
 		<input type="text" id="patient" autofocus placeholder="Enter Patients Account Number:"> 
 		<br>
 		<button id="lookupPt">Find</button>
+	</div>
+	
+	<div class="ptwrapper">
+		<div id="displaypatient"></div>
+	</div>
+	
+	<div id="newswrap">
+		<h2>National Early Warning Score</h2>
+		<div id="newsDisplay"></div>
+		<textarea id="obsfreq" wrap="hard" readonly></textarea>
+		<textarea id="newsAlert" wrap="hard" rows="3" readonly></textarea>
+		<textarea id="newsresponse" wrap="hard" rows="6" readonly></textarea>
+	</div><br>
+	
+	<div id="more" class="ui-content form">
+		<button id="another">Record another set of observations</button>
+		<br>
+		
+		
 	
 	</div>
-	<div class="ptwrapper"><div id="displaypatient"></div></div>
-	<div id="newswrap"><div id="newsDisplay"><textarea id="alert"></textarea></div></div>
+	
 	<div id="observations">
 	
 	<h2>Observations</h2>
@@ -86,6 +103,7 @@
 		<div class="box a">	
 			<div class="modal">
 				<h2>Blood Pressure</h2>
+				<a href="#bg-modal1" id="bpedit" data-position-to="window" data-rel="popup" class="button">Edit</a>
 				<input type="text" id="bpview" class="obsview" readonly></a>
 				<a href="#bg-modal1" id="bprecord" data-position-to="window" data-rel="popup" class="button">Record</a>
 			</div>
@@ -93,6 +111,7 @@
 		<div class="box b">	
 			<div class="modal">
 				<h2>Heart Rate</h2>
+				<a href="#bg-modal2" id="hredit" data-position-to="window" data-rel="popup" class="button">Edit</a>
 				<input type="text" id="hrview" class="obsview" readonly></a>
 				<a href="#bg-modal2" id="hrrecord" data-position-to="window" data-rel="popup" class="button">Record</a>
 			</div>
@@ -100,6 +119,7 @@
 		<div class="box c">	
 			<div class="modal">
 				<h2>Temperature</h2>
+				<a href="#bg-modal3" id="tempedit" data-position-to="window" data-rel="popup" class="button">Edit</a>
 				<input type="text" id="tempview" class="obsview" readonly></a>
 				<a href="#bg-modal3" id="temprecord" data-position-to="window" data-rel="popup" class="button">Record</a>
 			</div>
@@ -107,6 +127,7 @@
 		<div class="box d">	
 			<div class="modal">
 				<h2>Respirations</h2>
+				<a href="#bg-modal4" id="respedit" data-position-to="window" data-rel="popup" class="button">Edit</a>
 				<input type="text" id="respview" class="obsview" readonly></a>
 				<a href="#bg-modal4" id="resprecord" data-position-to="window" data-rel="popup" class="button">Record</a>
 			</div>
@@ -114,6 +135,7 @@
 		<div class="box e">	
 			<div class="modal">
 				<h2>SpO2</h2>
+				<a href="#bg-modal5" id="spo2edit" data-position-to="window" data-rel="popup" class="button">Edit</a>
 				<input type="text" id="spo2view" class="obsview" readonly></a>
 				<a href="#bg-modal5" id="spo2record" data-position-to="window" data-rel="popup" class="button">Record</a>
 			</div>
@@ -121,6 +143,7 @@
 		<div class="box f">	
 			<div class="modal">
 				<h2>LOC</h2>
+				<a href="#bg-modal6" id="locedit" data-position-to="window" data-rel="popup" class="button">Edit</a>
 				<input type="text" id="locview" class="obsview" readonly></a>
 				<a href="#bg-modal6" id="locrecord" data-position-to="window" data-rel="popup" class="button">Record</a>
 			</div>
@@ -149,7 +172,7 @@
 				<img src="/img/hr.png" alt="hr">
 				<form>
     				<label class="label" for="hrslider">Heart Rate</label>
-    				<input type="range" name="hrslider" id="hrslider" min="0" max="200" value="60">
+    				<input type="range" name="hrslider" id="hrslider" min="0" max="240" value="60">
 				</form>
 				<a href="#" class="save" data-rel="back" onclick="hrCalc();">Save</a>
 			</div>			
@@ -185,7 +208,7 @@
 				<img src="/img/spo2.png" alt="spo2">
 				<form>
     				<label class="label" for="respslider">SpO2</label>
-    				<input type="range" name="spo2slider" id="spo2slider" min="0" max="100" value="0">
+    				<input type="range" name="spo2slider" id="spo2slider" min="0" max="100" value="99">
 				</form>
 				<a href="#" class="save" data-rel="back" onclick="spo2Calc();">Save</a>
 			</div>			
@@ -208,25 +231,46 @@
 			</div>			
 		</div>
 	
+	<div id="footer">
+		<div id="logout" class="form">
+				<button id="loggedout" onclick="logoutck();">Logout</button>
+		</div>
+	</div><!-- /footer -->
 
-
-	
-	
 </div>
 
-
-<div data-role="page" id="doctor" data-theme="a">
+<!-- start of doctor page -->
+<div data-role="page" id="doctor" data-theme="a" class="bg-color">
     <div data-role="header" class="header">
 		<img src="img/logo.jpg" alt="logo" />
 		<h1>Doctors's Page</h1>
 	</div><!-- /header -->
-
-    <div role="main" class="ui-content">
 	
+    <div role="main" class="ui-content">
+		
+			<div class="form"><button id="viewpts">View your Patients</button><br></div>
+			<div id="propts"></div>
+			<div id="displaypt"></div><br>
+			<div id="ptobs"></div>
 
-
+	
+			<div id="backtopts" class="form">
+				<button id="showpts" onclick="showpts();">Back to Patients</button>
+			</div>	
+			
+			
+				
 	</div><!-- /content -->
+	<div id="footer">
+		<div id="logout" class="form">
+				<button id="loggedout" onclick="logoutck();">Logout</button>
+		</div>
+	</div><!-- /footer -->
 </div>
+
+
+
+
 
 
 <script>
@@ -237,7 +281,16 @@ $("#tempview").hide();
 $("#respview").hide();
 $("#spo2view").hide();
 $("#locview").hide();
-$("#newsDisplay").hide();
+$("#newswrap").hide();
+$("#more").hide();
+$("#bpedit").hide();
+$("#hredit").hide();
+$("#tempedit").hide();
+$("#respedit").hide();
+$("#spo2edit").hide();
+$("#locedit").hide();
+$("#provider").hide();
+$("#backtopts").hide();
 
 var patientid;
 var bpScore;
@@ -248,7 +301,7 @@ var spo2Score;
 var locScore;
 var newsScore;
 
-// function to lookup patient and return results - working
+// function to lookup patient and return result
 $( "#lookupPt" ).click(function() {
 
 	var patient = $("#patient").val();
@@ -262,205 +315,209 @@ $( "#lookupPt" ).click(function() {
 	});
 });	
 
-// bp Calculation - working
+// bp Calculation
 function bpCalc() {
 		var val = document.getElementById('bpslider').value;
-		if (val >= 111 && val <= 240) {
+		if (val >= 111 && val <= 220) {
 			bpScore = 0;
-			alert(bpScore);
 			$("#bprecord").hide();
 			$("#bpview").val(val + " mmHg");
+			$("#bpview").css("background-color","white");
 			$("#bpview").show();
+			$("#bpedit").show();
         }
-		else if ((val >= 101 && val <= 110) || (val >= 241)) {
+		else if ((val >= 101 && val <= 110) || (val >= 221)) {
 			bpScore = 1;
-			alert(bpScore);
 			$("#bprecord").hide();
 			$("#bpview").val(val + " mmHg");
+			$("#bpview").css("background-color","yellow");
 			$("#bpview").show();
+			$("#bpedit").show();
         }
 		else if (val >= 91 && val <= 100) {
 			bpScore = 2;
-			alert(bpScore);
 			$("#bprecord").hide();
 			$("#bpview").val(val + " mmHg");
+			$("#bpview").css("background-color","#42b0f4");
 			$("#bpview").show();
+			$("#bpedit").show();
         }
 		else if (val >= 0 && val <= 90) {
 			bpScore = 3;
-			alert(bpScore);
 			$("#bprecord").hide();
 			$("#bpview").val(val + " mmHg");
+			$("#bpview").css("background-color","pink");
 			$("#bpview").show();
+			$("#bpedit").show();
         }
 };
-// hr Calculation - working
+// hr Calculation
 function hrCalc() {
 		var val = document.getElementById('hrslider').value;
 		if (val >= 51 && val <= 90) {
 			hrScore = 0;
-			alert(hrScore);
 			$("#hrrecord").hide();
 			$("#hrview").val(val + " bpm");
+			$("#hrview").css("background-color","white");
 			$("#hrview").show();
+			$("#hredit").show();
         }
 		else if ((val >= 41 && val <= 50) || (val >= 91 && val <= 110)) {
 			hrScore = 1;
-			alert(hrScore);
 			$("#hrrecord").hide();
 			$("#hrview").val(val + " bpm");
+			$("#hrview").css("background-color","yellow");
 			$("#hrview").show();
+			$("#hredit").show();
         }
 		else if (val >= 111 && val <= 130) {
 			hrScore = 2;
-			alert(hrScore);
 			$("#hrrecord").hide();
 			$("#hrview").val(val + " bpm");
+			$("#hrview").css("background-color","#42b0f4");
 			$("#hrview").show();
+			$("#hredit").show();
         }
 		else if (val <= 40 || val >= 131) {
 			hrScore = 3;
-			alert(hrScore);
 			$("#hrrecord").hide();
 			$("#hrview").val(val + " bpm");
+			$("#hrview").css("background-color","pink");
 			$("#hrview").show();
+			$("#hredit").show();
         }
 };
-// temp Calculation - working
+// temp Calculation
 function tempCalc() {
 		var val = document.getElementById('tempinput').value;
 		if (val >= 35.6 && val <= 38.0) {
 			tempScore = 0;
-			alert(tempScore);
 			$("#temprecord").hide();
 			$("#tempview").val(val + " oC");
+			$("#tempview").css("background-color","white");
 			$("#tempview").show();
+			$("#tempedit").show();
 		}
 		else if ((val >= 35.1 && val <= 35.5) || (val >= 38.1 && val <= 39.0)) {
 			tempScore = 1;
-			alert(tempScore);
 			$("#temprecord").hide();
 			$("#tempview").val(val + " oC");
+			$("#tempview").css("background-color","yellow");
 			$("#tempview").show();
+			$("#tempedit").show();
 		}
 		else if (val >= 39.1) {
 			tempScore = 2;
-			alert(tempScore);
 			$("#temprecord").hide();
 			$("#tempview").val(val + " oC");
+			$("#tempview").css("background-color","#42b0f4");
 			$("#tempview").show();
+			$("#tempedit").show();
 		}
 		else if (val <= 35.0) {
 			tempScore = 3;
-			alert(tempScore);
 			$("#temprecord").hide();
 			$("#tempview").val(val + " oC");
+			$("#tempview").css("background-color","pink");
 			$("#tempview").show();
+			$("#tempedit").show();
 		}
 };
-// resp Calculation - working
+// resp Calculation
 function respCalc() {
 		var val = document.getElementById('respslider').value;
 		if (val >= 12 && val <= 20) {
 			respScore = 0;
-			alert(respScore);
 			$("#resprecord").hide();
 			$("#respview").val(val + " bpm");
+			$("#respview").css("background-color","white");
 			$("#respview").show();
+			$("#respedit").show();
 		}
 		else if (val >= 9 && val <= 11) {
 			respScore = 1;
-			alert(respScore);
 			$("#resprecord").hide();
 			$("#respview").val(val + " bpm");
+			$("#respview").css("background-color","yellow");
 			$("#respview").show();
+			$("#respedit").show();
 		}
 		else if (val >= 21 && val <= 24) {
 			respScore = 2;
-			alert(respScore);
 			$("#resprecord").hide();
 			$("#respview").val(val + " bpm");
+			$("#respview").css("background-color","#42b0f4");
 			$("#respview").show();
+			$("#respedit").show();
 		}
 		else if (val <= 8 || val >= 25) {
 			respScore = 3;
-			alert(respScore);
 			$("#resprecord").hide();
 			$("#respview").val(val + " bpm");
+			$("#respview").css("background-color","pink");
 			$("#respview").show();
+			$("#respedit").show();
 		}
 };
-// spo2 Calculation - working
+// spo2 Calculation
 function spo2Calc() {
 		var val = document.getElementById('spo2slider').value;
 		if (val >= 96) {
 			spo2Score = 0;
-			alert(spo2Score);
 			$("#spo2record").hide();
 			$("#spo2view").val(val + " %");
+			$("#spo2view").css("background-color","white");
 			$("#spo2view").show();
+			$("#spo2edit").show();
 		}
 		else if (val >= 94 && val <= 95) {
 			spo2Score = 1;
-			alert(spo2Score);
 			$("#spo2record").hide();
 			$("#spo2view").val(val + " %");
+			$("#spo2view").css("background-color","yellow");
 			$("#spo2view").show();
+			$("#spo2edit").show();
 		}
 		else if (val >= 92 && val <= 93) {
 			spo2Score = 2;
-			alert(spo2Score);
 			$("#spo2record").hide();
 			$("#spo2view").val(val + " %");
+			$("#spo2view").css("background-color","#42b0f4");
 			$("#spo2view").show();
+			$("#spo2edit").show();
 		}
 		else if (val <= 91) {
 			spo2Score = 3;
-			alert(spo2Score);
 			$("#spo2record").hide();
 			$("#spo2view").val(val + " %");
+			$("#spo2view").css("background-color","pink");
 			$("#spo2view").show();
+			$("#spo2edit").show();
 		}
 };
-// loc Calculation - working
+// loc Calculation
 function locCalc() {
 	var val = document.getElementById("avpu").value;
 		if (val == 'alert') {
 			locScore = 0;
-			alert(locScore);
 			$("#locrecord").hide();
 			$("#locview").val(val);
+			$("#locview").css("background-color","white");
 			$("#locview").show();
+			$("#locedit").show();
 		}
 		else {	
 			locScore = 3;
-			alert(locScore);
 			$("#locrecord").hide();
 			$("#locview").val(val);
+			$("#locview").css("background-color","pink");
 			$("#locview").show();
+			$("#locedit").show();
 		}
 };
-// news Calculation - working
+// news Calculation
 $( "#calculate" ).click(function() {
-	newsScore = bpScore + hrScore + tempScore + respScore + spo2Score + locScore;
-	  
-	if (newsScore = 0) {
-		$("#newsDisplay").css("background-color","white");
-	} 
-	else if (newsScore = 1) { 
-		$("#newsDisplay").css("background-color","yellow");
-		$("#alert").val("Nurse in charge");
-	}
-	else if (newsScore = 2) { 
-		$("#newsDisplay").css("background-color","blue");
-	}
-	else if (newsScore >= 4) { 
-		$("#newsDisplay").css("background-color","pink");
-	}
-		
-		
-		
-		
+	newsScore = bpScore + hrScore + tempScore + respScore + spo2Score + locScore;		
 		
 	var bp = document.getElementById('bpslider').value;
 	var hr = document.getElementById('hrslider').value;
@@ -469,6 +526,9 @@ $( "#calculate" ).click(function() {
 	var spo2 = document.getElementById('spo2slider').value;
 	var loc = document.getElementById("avpu").value;
 	var news = newsScore;
+	var date;
+	date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+	<!-- alert(date); -->
 	
 	var patient = $("#patient").val();
 	
@@ -477,31 +537,168 @@ $( "#calculate" ).click(function() {
 			patientid = data;
 			
 	  
-		$.post( "/patient", { type: "recordobs", bp:bp, hr:hr, temp:temp, resp:resp, spo2:spo2, loc:loc, ptid:patientid, news:news})
+		$.post( "/patient", { type: "recordobs", bp:bp, hr:hr, temp:temp, resp:resp, spo2:spo2, loc:loc, ptid:patientid, news:news, date:date})
 			.done(function( data ) {
+			
+				if (newsScore == 0) {
+					$("#newsDisplay").css("background-color","white");
+					$("#newswrap").css("background-color","white");
+					$("#newsAlert").hide();
+					$("#obsfreq").css("background-color","white");
+					$("#obsfreq").text("Minimum Observation Frequency:\n12 hourly");
+					$("#newsresponse").css("background-color","white");
+					$("#newsresponse").text("Response:\nMinimum Observations Requirement.");
+				} 
+				else if (newsScore == 1) { 
+					$("#newsDisplay").css("background-color","yellow");
+					$("#newswrap").css("background-color","yellow");
+					$("#newsAlert").css("background-color","yellow");
+					$("#newsAlert").text("Alert:\nNurse in charge");
+					$("#obsfreq").css("background-color","yellow");
+					$("#obsfreq").text("Minimum Observation Frequency:\n6 hourly");
+					$("#newsresponse").css("background-color","yellow");
+					$("#newsresponse").text("Response:\nNurse in charge to review if new score 1.");
+				}
+				else if (newsScore == 2) { 
+					$("#newsDisplay").css("background-color","#42b0f4");
+					$("#newswrap").css("background-color","#42b0f4");
+					$("#newsAlert").css("background-color","#42b0f4");
+					$("#newsAlert").text("Alert:\nNurse in charge");
+					$("#obsfreq").css("background-color","#42b0f4");
+					$("#obsfreq").text("Minimum Observation Frequency:\n4 hourly");
+					$("#newsresponse").css("background-color","#42b0f4");
+					$("#newsresponse").text("Response:\nNurse in charge to review.");
+				}
+				else if (newsScore == 3) { 
+					$("#newsDisplay").css("background-color","#42b0f4");
+					$("#newswrap").css("background-color","#42b0f4");
+					$("#newsAlert").css("background-color","#42b0f4");
+					$("#newsAlert").val("Alert:\nNurse in charge.\nTeam/On-call RMO");
+					$("#obsfreq").css("background-color","#42b0f4");
+					$("#obsfreq").text("Minimum Observation Frequency:\n2 hourly");
+					$("#newsresponse").css("background-color","#42b0f4");
+					$("#newsresponse").text("Response:\n1. RMO to review within 1 hour");
+				}
+				else if (newsScore >= 4 && newsScore <= 6) { 
+					$("#newsDisplay").css("background-color","pink");
+					$("#newswrap").css("background-color","pink");
+					$("#newsAlert").css("background-color","pink");
+					$("#newsAlert").val("Alert:\nNurse in charge & Team/On-call Consultant/RMO");
+					$("#obsfreq").css("background-color","pink");
+					$("#obsfreq").text("Minimum Observation Frequency:\n1 hourly");
+					$("#newsresponse").css("background-color","pink");
+					$("#newsresponse").val("Response:\n1. RMO to review within 1 hour\n2. If no response to treatment within 1 hour contact RMO/Consultant \n3. Consider continuous patient monitoring \n4. Consider transfer to higher level of care");
+				}
+				else if (newsScore >= 7) { 
+					$("#newsDisplay").css("background-color","pink");
+					$("#newswrap").css("background-color","pink");
+					$("#newsAlert").css("background-color","pink");
+					$("#newsAlert").val("Alert:\nNurse in charge & Team/On-call RMO.\nInform Team/On-call Consultant");
+					$("#obsfreq").css("background-color","pink");
+					$("#obsfreq").text("Minimum Observation Frequency:\n1/2 hourly");
+					$("#newsresponse").css("background-color","pink");
+					$("#newsresponse").text("Response:\n1. RMO to review immediately\n2. Continous patient monitoring recommended\n3. Plan to transfer to higher level of care\n4. Activate Cardiac Arrest System (as appropriate to hospital model");
+				}
+	
 				$("#observations").hide();
 				$("#newsDisplay").html(news);
-				$("#newsDisplay").show();
+				$("#newswrap").show();
+				$("#more").show();
 		});
 	});
 });
 
+// record another set of obs
+$("#another").click(function() {
+	 $("#lookuppatient").show();
+	 $("#footer").show();
+	 $("#patient").val("");
+	 $(".ptwrapper").hide();
+	 $("#observations").hide();
+	 $("#observations").html("");
+	 $("#more").hide();
+	 $("#newswrap").hide();
+	 });
+	
+// show all providers patients 
+$("#viewpts").click(function() {
+	$.post("/backend", { type: "getproviderid"} )
+		.done(function( data ) {
+			providerid = data;
+			
+		$.post("/patient", {type: "providerpts", providerid: providerid})
+			.done(function(data){
+				
+				patients = data;
+				
+				$("#propts").html(patients)
+				$("#viewpts").hide();
+				
+		});
+	});
+});
+
+// show one patients observations
+<!-- function reply_click(clicked_id) -->
+<!-- { -->
+    <!-- ptid = clicked_id; -->
+
+	<!-- $.post( "/patient", {type: "getPtbyId", ptid: ptid}) -->
+		<!-- .done(function(data){ -->
+			<!-- $("#displaypt").show(); -->
+			<!-- $("#displaypt").html(data); -->
+	
+		<!-- $.post("/patient", { type: "getptobs", ptid:ptid}) -->
+			<!-- .done(function(data) { -->
+			
+				<!-- $("#ptobs").html(data) -->
+				<!-- $("#ptobs").show(); -->
+				<!-- $("#propts").hide(); -->
+				<!-- $("#backtopts").show(); -->
+				
+		<!-- });	 -->
+	<!-- }); -->
+<!-- } -->
+
+
+function reply_click(clicked_id){
+	
+	ptid = clicked_id;
+	
+	$.post( "/observations", {ptid: ptid});
+		alert (ptid);
+
+}
+		
+
+// back to patients
+function showpts() {
+	
+	$("#displaypt").hide();	
+	$("#propts").show();
+	$("#ptobs").hide();
+	$("#backtopts").hide();
+}
+
+// get 
 // show provider div if account type is Doctor
-$(document).ready(function(){
-	$("select").change(function(){
+$(function(){
+	$("#acctype").change(function(){
+		<!-- $('#provider').hide(); -->
+		<!-- $('#' + $(this).val()).show(); -->
+	<!-- }); -->
+<!-- }); -->
 		var type = $(this).val();
-		if(type == "Doctor"){
+		if(type == "doctor"){
 			$("#provider").show();
-		} else if(type == "Nurse"){
+		} else {
             $("#provider").hide();
-        } else {
-			$("#provider").hide();
-		}
+        } 
 	});
 });
 
 // fill provider select field
-var provider;
+<!-- var provider; -->
 	$.post( "/backend", {type: "getProviders"})
 	
 		.done(function(data) {
@@ -509,43 +706,66 @@ var provider;
 			$("#provider").html(data)
 			});
 			
-		
-// function to show options to select providerId
-<!-- function profunction () { -->
-	<!-- $("#acctype").change(function(){ -->
-
-		<!-- if($(this).val === "doctor"){ -->
-			<!-- $("#provider").show(); -->
-		<!-- } -->
-		<!-- else{ -->
-			<!-- $("#provider").hide(); -->
-		<!-- } -->
-	<!-- }); -->
-<!-- } -->
-// register user - working
+// register user
 $( "#registerButton" ).click(function() {
   
-      var un = $( "#username" ).val();
+    var un = $( "#username" ).val();
       console.log(un);
-      
-      var pw = $( "#pass" ).val();
+    var pw = $( "#pass" ).val();
       console.log(pw);
-      
-      var at = $( "#acctype" ).val();
+    var at = $( "#acctype" ).val();
       console.log(acctype);
-      
-      $.post( "/backend", { type: "register", username:un, password:pw, acctype:at})
-     .done(function( data ) {
+	var pro = $( "#pro" ).val();
+	  console.log(pro);
+	var proid;
+	
+	if (pro !== null){
+		$.post("/backend", { type: "getprovideridbyname", pro:pro})
+			.done(function( data ) {
+				proid = data;
+	
+			$.post( "/backend", { type: "register", username:un, password:pw, acctype:at, providerid:proid})
+				.done(function( data ) {
 		
-		if(data == 'Nurse'){
-            window.location="/index#nurse";
-        }
-        else if(data == 'Doctor'){
-            window.location="/index#doctor";
-        }
-		});  
+					if(data == 'taken'){
+			
+						alert('Username already exists, please choose another'); 
+					}
+					else {
+		
+						if(data == 'nurse'){
+							window.location="/index#nurse";
+						}
+						else if(data == 'doctor'){
+							window.location="/index#doctor";
+						}
+					}
+				});
+			})
+		}
+		
+	else if (pro == null){
+		$.post( "/backend", { type: "register", username:un, password:pw, acctype:at, providerid:proid})
+			.done(function( data ) {
+		
+				if(data == 'taken'){
+			
+					alert('Username already exists, please choose another'); 
+				}
+				else {
+		
+					if(data == 'nurse'){
+						window.location="/index#nurse";
+					}
+					else if(data == 'doctor'){
+						window.location="/index#doctor";
+					}
+				}
+		});
+	}
 });
-// log user into app - working
+	
+// log user into app
 $( "#loginButton" ).click(function() {
   
       var un = $( "#login_username" ).val();
@@ -554,19 +774,70 @@ $( "#loginButton" ).click(function() {
       var pw = $( "#login_pass" ).val();
       console.log(pw);
            
-      $.post( "/backend", { type: "login", username:un, password:pw})
-     .done(function( data ) {
+		var allOk = validateElements();
+		   if(allOk == true){
+				$.post( "/backend", { type: "login", username:un, password:pw})
+				.done(function( data ) {
            
-        if(data == 'Nurse'){
-            window.location="/index#nurse";
-        }
-        else if(data == 'Doctor'){
-            window.location="/index#doctor";
-        }
-		});
+				if(data == 'nurse'){
+					window.location="/index#nurse";
+				}
+				else if(data == 'doctor'){
+					window.location="/index#doctor";
+				}
+				});
+		}
 });
+
+// validating username and password - working
+function validateElements(){
+	
+	
+	var allOk = false;
+	
+	// check the login_username is not empty
+	if($("#login_username").val() == ""){
+	
+		$("#loginNameError").html("Please enter in a username");
+	}
+	else{
+		$("#loginNameError").html("");
+		allOk = true;
+	}
+	
+	// check the login_password is not empty 
+	if($("#login_pass").val() == ""){
+	
+		$("#loginPasswordError").html("Please enter in a password");
+		allOk = false;
+	}
+	else{
+		$("#loginPasswordError").html("");
+		
+		allOk = true;
+	}
+	
+	return allOk;
+	
+}
+
+// go back
+function goBack() {
+  window.history.back();
+}
+
+
+// logout
+function logoutck() {
+
+		$.post( "/backend", {type: "logout"})
+		
+		.done(function(data){
+		
+			window.location.href = data;
+    });
+}	
+
+
 </script>
 
-</body>
-
-{% include 'footer.html' %}

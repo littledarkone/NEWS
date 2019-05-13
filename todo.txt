@@ -1,0 +1,25 @@
+
+
+
+
+Password - doesntt meet requirements
+
+Password requirements
+
+Username - not found
+
+Password is wrong for username
+
+Patient not found
+
+Pages not accessible unless your logged in
+
+
+
+
+
+Make sure you can't calculate until all 6 vitals are recorded
+
+
+
+
